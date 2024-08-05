@@ -1,23 +1,20 @@
-#include <ActiveStatus.h>
+#include <ArduinoJson.h>
+#include <FS.h>
+#include "ActiveStatus.h"
 
-ActiveStatus::ActiveStatus(FS *fs) : _fs(fs)
-{
-}
+ActiveStatus::ActiveStatus(FS *fs) : _fs(fs) {}
 
 ActiveStatus::~ActiveStatus() {}
 
-boolean ActiveStatus::LoadActiveStatusSettings()
-{
+boolean ActiveStatus::LoadActiveStatusSettings() {
     File configFile = _fs->open(ACTIVE_STATUS_FILE, "r");
-    if (configFile)
-    {
+    if (configFile) {
         size_t size = configFile.size();
-        if (size <= MAX_ACTIVESTATUS_SIZE)
-        {
-            DynamicJsonDocument _activeStatusJsonDocument = DynamicJsonDocument(MAX_ACTIVESTATUS_SIZE);
+        if (size <= MAX_ACTIVESTATUS_SIZE) {
+            DynamicJsonDocument _activeStatusJsonDocument(MAX_ACTIVESTATUS_SIZE);
             DeserializationError error = deserializeJson(_activeStatusJsonDocument, configFile);
-            if (error == DeserializationError::Ok && _activeStatusJsonDocument.is<JsonObject>())
-            {
+            configFile.close();
+            if (error == DeserializationError::Ok && _activeStatusJsonDocument.is<JsonObject>()) {
                 JsonObject _activeStatus = _activeStatusJsonDocument.as<JsonObject>();
                 ActiveStep = _activeStatus["active_step"];
                 ActiveMashStepIndex = _activeStatus["active_mash_step_index"];
@@ -42,30 +39,32 @@ boolean ActiveStatus::LoadActiveStatusSettings()
                 TimeNotSet = _activeStatus["time_not_set"];
                 Count = _activeStatus["count"] | "";
                 TempUnit = _activeStatus["temp_unit"] | "";
-                configFile.close();
+                return true;
+            } else {
+                Serial.println("Failed to deserialize JSON");
             }
+        } else {
+            Serial.println("Config file size is too large");
         }
-        configFile.close();
+    } else {
+        Serial.println("Failed to open config file");
     }
-    return true;
+    return false;
 }
 
-void ActiveStatus::TimeNotSetted()
-{
+void ActiveStatus::TimeNotSetted() {
     TimeNotSet = true;
     Serial.println("Time NOT setted");
 }
 
-void ActiveStatus::TimeSetted()
-{
+void ActiveStatus::TimeSetted() {
     TimeNotSet = false;
     Serial.println("Time setted");
 }
 
 static const char ACTIVE_STATUS[] PROGMEM = "{\"as\":{{ActiveStep}},\"amsi\":{{ActiveMashStepIndex}},\"masn\":\"{{ActiveMashStepName}}\",\"amssn\":\"{{ActiveMashStepSufixName}}\",\"absi\":\"{{ActiveBoilStepIndex}}\",\"absn\":\"{{ActiveBoilStepName}}\",\"btt\":{{BoilTargetTemperature}},\"ttp\":{{TargetTemperature}},\"st\":{{StartTime}},\"et\":{{EndTime}},\"tn\":{{TimeNow}},\"bs\":{{BrewStarted}},\"tp\":{{Temperature}},\"stp\":{{SpargeTemperature}},\"btp\":{{BoilTemperature}},\"atp\":{{AuxOneTemperature}},\"attp\":{{AuxTwoTemperature}},\"atttp\":{{AuxThreeTemperature}},\"axs\": \"{{AuxOneSensor}}\",\"axss\": \"{{AuxTwoSensor}}\",\"axsss\": \"{{AuxThreeSensor}}\",\"pp\":{{PWMPercentage}},\"spp\":{{SpargePWMPercentage}},\"bppt\":{{BoilPWMPercentage}},\"es\":{{EnableSparge}},\"eb\":{{EnableBoilKettle}},\"stt\":{{SpargeTargetTemperature}},\"sl\":{{StepLocked}},\"po\":{{PumpOn}},\"pir\":{{PumpIsResting}},\"tns\":{{TimeNotSet}},\"tu\": \"{{TempUnit}}\",\"v\": \"{{Version}}\",\"c\": \"{{Count}}\",\"bpp\":{{BoilPowerPercentage}} }";
 
-String ActiveStatus::GetJson()
-{
+String ActiveStatus::GetJson() {
     String active_status = FPSTR(ACTIVE_STATUS);
     active_status.replace("{{ActiveStep}}", String(ActiveStep));
     active_status.replace("{{ActiveMashStepIndex}}", String(ActiveMashStepIndex));
@@ -105,17 +104,7 @@ String ActiveStatus::GetJson()
     return active_status;
 }
 
-void ActiveStatus::SaveActiveStatus(time_t startTime,
-                                    time_t endTime,
-                                    time_t timeNow,
-                                    float targetTemperature,
-                                    int activeMashStepIndex,
-                                    String activeBoilStepIndex,
-                                    int boilTime,
-                                    float boilTargetTemperature,
-                                    int activeStep,
-                                    boolean brewStarted)
-{
+void ActiveStatus::SaveActiveStatus(time_t startTime, time_t endTime, time_t timeNow, float targetTemperature, int activeMashStepIndex, String activeBoilStepIndex, int boilTime, float boilTargetTemperature, int activeStep, boolean brewStarted) {
     ActiveStep = activeStep;
 
     ActiveMashStepIndex = activeMashStepIndex;
@@ -150,19 +139,16 @@ void ActiveStatus::SaveActiveStatus(time_t startTime,
 
 time_t lastWrite = now();
 
-void ActiveStatus::SaveActiveStatusLoop()
-{
-    if ((!BrewStarted) || (now() - lastWrite < 60))
-        return;
+void ActiveStatus::SaveActiveStatusLoop() {
+    if ((!BrewStarted) || (now() - lastWrite < 60)) return;
 
     SaveActiveStatus();
 }
 
-void ActiveStatus::SaveActiveStatus()
-{
+void ActiveStatus::SaveActiveStatus() {
     lastWrite = now();
 
-    DynamicJsonDocument _activeStatusJsonDocument = DynamicJsonDocument(MAX_ACTIVESTATUS_SIZE);
+    DynamicJsonDocument _activeStatusJsonDocument(MAX_ACTIVESTATUS_SIZE);
     JsonObject _activeStatus = _activeStatusJsonDocument.to<JsonObject>();
 
     _activeStatus["active_step"] = ActiveStep;
@@ -191,29 +177,19 @@ void ActiveStatus::SaveActiveStatus()
     _activeStatus["count"] = Count;
 
     File configFile = _fs->open(ACTIVE_STATUS_FILE, "w");
-    if (configFile)
+    if (configFile) {
         serializeJson(_activeStatus, configFile);
-    else
-    {
+        configFile.close();
+    } else {
         Serial.println("Error mounting the file system");
-        return;
     }
-
-    configFile.close();
 }
 
-void ActiveStatus::SetTemperature(Temperatures temps)
-{
-    if (temps.Main >= 0)
-        Temperature = temps.Main;
-    if (temps.Sparge >= 0)
-        SpargeTemperature = temps.Sparge;
-    if (temps.Boil >= 0)
-        BoilTemperature = temps.Boil;
-    if (temps.AuxOne >= 0)
-        AuxOneTemperature = temps.AuxOne;
-    if (temps.AuxTwo >= 0)
-        AuxTwoTemperature = temps.AuxTwo;
-    if (temps.AuxThree >= 0)
-        AuxThreeTemperature = temps.AuxThree;
+void ActiveStatus::SetTemperature(Temperatures temps) {
+    if (temps.Main >= 0) Temperature = temps.Main;
+    if (temps.Sparge >= 0) SpargeTemperature = temps.Sparge;
+    if (temps.Boil >= 0) BoilTemperature = temps.Boil;
+    if (temps.AuxOne >= 0) AuxOneTemperature = temps.AuxOne;
+    if (temps.AuxTwo >= 0) AuxTwoTemperature = temps.AuxTwo;
+    if (temps.AuxThree >= 0) AuxThreeTemperature = temps.AuxThree;
 }

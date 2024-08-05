@@ -12,12 +12,12 @@ private:
   const uint16_t pin;
   unsigned long timer = 0;
   unsigned long long_timer = 1500;
-  boolean state = false;
-  boolean state_long = false;
+  bool state = false;
+  bool state_long = false;
 
 public:
-  boolean pressed_long = false;
-  boolean pressed = false;
+  bool pressed_long = false;
+  bool pressed = false;
 
   KeyButton(const uint16_t pin, PCF857x &pcf_ref) : pin(pin), pcf(pcf_ref)
   {
@@ -44,7 +44,7 @@ public:
     else if (pcf.read(pin) && state && millis() - timer >= 50)
     {
       if (millis() - timer < long_timer)
-        pressed = true;
+      pressed = true;
       state_long = false;
       state = false;
       timer = millis();

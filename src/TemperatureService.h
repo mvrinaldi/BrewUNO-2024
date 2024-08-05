@@ -5,9 +5,9 @@
 #include <DallasTemperature.h>
 #include <TimeLib.h>
 #include <ESPAsyncWebServer.h>
-#include <ActiveStatus.h>
-#include <BrewSettingsService.h>
-#include <enum.h>
+#include "ActiveStatus.h"
+#include "BrewSettingsService.h"
+#include "enum.h"
 
 #define APPLICATION_JSON_TYPE "application/json"
 #define GET_SENSORS_SERVICE_PATH "/rest/getsensors"
@@ -29,9 +29,9 @@ public:
   int DeviceCount;
 
 private:
-  DallasTemperature _dallasTemperature;
   AsyncWebServer *_server;
   FS *_fs;
+  DallasTemperature _dallasTemperature;
   float getTemperature();
 };
 #endif

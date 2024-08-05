@@ -1,18 +1,17 @@
-#include <Pump.h>
+#include "Pump.h"
 
-time_t lastPumpStarted;
-time_t lastPumpRest;
+// Variáveis para armazenar os tempos usando millis()
+unsigned long lastPumpStarted = 0;
+unsigned long lastPumpRest = 0;
 
 bool isResting = false;
 bool recirculationOn = false;
 
-Pump::Pump(AsyncWebServer *server, ActiveStatus *activeStatus, BrewSettingsService *brewSettingsService) : _server(server),
-                                                                                                           _activeStatus(activeStatus),
-                                                                                                           _brewSettingsService(brewSettingsService)
-
+Pump::Pump(AsyncWebServer *server, ActiveStatus *activeStatus, BrewSettingsService *brewSettingsService) 
+    : _server(server), _activeStatus(activeStatus), _brewSettingsService(brewSettingsService)
 {
-    _server->on(START_PUMP_SERVIVE_PATH, HTTP_POST, std::bind(&Pump::startPumpHttpService, this, std::placeholders::_1));
-    _server->on(STOP_PUMP_SERVIVE_PATH, HTTP_POST, std::bind(&Pump::stopPumpHttpService, this, std::placeholders::_1));
+    _server->on(START_PUMP_SERVICE_PATH, HTTP_POST, std::bind(&Pump::startPumpHttpService, this, std::placeholders::_1));
+    _server->on(STOP_PUMP_SERVICE_PATH, HTTP_POST, std::bind(&Pump::stopPumpHttpService, this, std::placeholders::_1));
 }
 
 void Pump::startPumpHttpService(AsyncWebServerRequest *request)
@@ -31,7 +30,7 @@ void Pump::TurnPumpOn()
 {
     TurnPump(true);
     recirculationOn = true;
-    lastPumpStarted = now();
+    lastPumpStarted = millis();
     lastPumpRest = 0;
     CheckRest();
 }
@@ -56,8 +55,8 @@ void Pump::CheckRest()
 {
     if (recirculationOn && !_activeStatus->PIDActing)
     {
-        time_t timeNow = now();
-        if (!isResting && timeNow - lastPumpStarted >= _brewSettingsService->PumpRestInterval)
+        unsigned long timeNow = millis();
+        if (!isResting && timeNow - lastPumpStarted >= _brewSettingsService->PumpRestInterval * 1000)
         {
             Serial.println("Pump Rest time to sleep!");
             TurnPump(false);
@@ -67,7 +66,7 @@ void Pump::CheckRest()
             Buzzer().Ring(1, 50);
         }
 
-        if (isResting && timeNow - lastPumpRest >= _brewSettingsService->PumpRestTime)
+        if (isResting && timeNow - lastPumpRest >= _brewSettingsService->PumpRestTime * 1000)
         {
             Serial.println("Pump Rest wake up!");
             TurnPump(true);
@@ -79,7 +78,9 @@ void Pump::CheckRest()
         _activeStatus->PumpIsResting = isResting;
     }
     else
+    {
         _activeStatus->PumpIsResting = false;
+    }
 }
 
 void Pump::antiCavitation()

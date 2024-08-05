@@ -1,4 +1,4 @@
-#include <MashSettingsService.h>
+#include "MashSettingsService.h"
 
 MashSettingsService::MashSettingsService(AsyncWebServer *server, FS *fs)
     : BrewListService(server, fs,
@@ -8,7 +8,7 @@ MashSettingsService::MashSettingsService(AsyncWebServer *server, FS *fs)
 
 bool MashSettingsService::jsonSchemaIsValid(JsonDocument jsonObj, String &messages)
 {
-    JsonArray steps = jsonObj["st"].as<JsonArray>();;
+    JsonArray steps = jsonObj["st"].as<JsonArray>();
     if (steps.size() <= 0)
     {
         return false;

@@ -1,12 +1,12 @@
 #ifndef NTPSettingsService_h
 #define NTPSettingsService_h
 
-#include <SettingsService.h>
+#include "SettingsService.h"
 
 #include <TimeLib.h>
 #include <NtpClientLib.h>
 
-#include <ActiveStatus.h>
+#include "ActiveStatus.h"
 
 // default time server
 #define NTP_SETTINGS_SERVICE_DEFAULT_SERVER "pool.ntp.org"

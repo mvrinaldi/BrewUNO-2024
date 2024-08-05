@@ -14,8 +14,7 @@
 #include <AsyncArduinoJson6.h>
 #include <TimeLib.h>
 #include <NtpClientLib.h>
-#include <enum.h>
-#include <enum.h>
+#include "enum.h"
 
 #define PGM_P       const char *
 #define PGM_VOID_P  const void *
@@ -24,16 +23,17 @@
 #define MAX_ACTIVESTATUS_SIZE 2024
 #define ACTIVE_STATUS_FILE "/config/activeStatus.json"
 
-class ActiveStatus
-{
+class ActiveStatus {
 public:
-  ActiveStatus(FS *f);
+  ActiveStatus(FS *fs);
   ~ActiveStatus();
 
+  // Step Information
   int ActiveStep;
   int LastActiveStep;
-  boolean BrewStarted;
+  bool BrewStarted;
 
+  // Boil Step Information
   String ActiveBoilStepIndex;
   String ActiveBoilStepName;
 
@@ -48,8 +48,8 @@ public:
   double SpargePWMPercentage;
   double BoilPWM;
   double BoilPWMPercentage;
-  boolean PIDActing;
-  boolean StartBoilCounter;
+  bool PIDActing;
+  bool StartBoilCounter;
 
   double BoilTargetTemperature;
   double BoilPowerPercentage;
@@ -79,21 +79,21 @@ public:
   time_t StartTime;
   time_t TimeNow;
 
-  boolean Recirculation;
-  boolean PIDTuning;
-  boolean PumpOn;
-  boolean PumpIsResting;
-  boolean PIDSettingsUpdated;
-  boolean TimeNotSet;
+  bool Recirculation;
+  bool PIDTuning;
+  bool PumpOn;
+  bool PumpIsResting;
+  bool PIDSettingsUpdated;
+  bool TimeNotSet;
 
   String TempUnit;
 
-  boolean HeaterOn;
-  boolean FullPower;
-  boolean StepLock;
-  boolean StepLocked;
+  bool HeaterOn;
+  bool FullPower;
+  bool StepLock;
+  bool StepLocked;
 
-  boolean LoadActiveStatusSettings();
+  bool LoadActiveStatusSettings();
   void SaveActiveStatus(time_t StartTime,
                         time_t EndTime,
                         time_t TimeNow,
@@ -103,7 +103,7 @@ public:
                         int boilTime,
                         float boilTargetTemperature,
                         int ActiveStep,
-                        boolean brewStarted);
+                        bool brewStarted);
   void SaveActiveStatus();
   void SaveActiveStatusLoop();
   void SetTemperature(Temperatures temps);

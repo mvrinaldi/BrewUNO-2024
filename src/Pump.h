@@ -3,13 +3,13 @@
 
 #include <Arduino.h>
 #include <TimeLib.h>
-#include <BrewSettingsService.h>
-#include <ActiveStatus.h>
-#include <Buzzer.h>
+#include "BrewSettingsService.h"
+#include "ActiveStatus.h"
+#include "Buzzer.h"
 
 #define APPLICATION_JSON_TYPE "application/json"
-#define START_PUMP_SERVIVE_PATH "/rest/startpump"
-#define STOP_PUMP_SERVIVE_PATH "/rest/stoppump"
+#define START_PUMP_SERVICE_PATH "/rest/startpump"
+#define STOP_PUMP_SERVICE_PATH "/rest/stoppump"
 
 class Pump
 {

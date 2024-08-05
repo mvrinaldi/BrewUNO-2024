@@ -3,8 +3,8 @@
 
 #include <ArduinoJson.h>
 #include <TimeLib.h>
-#include <enum.h>
-#include <ActiveStatus.h>
+#include "enum.h"
+#include "ActiveStatus.h"
 #include <LiquidCrystal_I2C.h>
 #include <WiFiStatus.h>
 #include <APStatus.h>

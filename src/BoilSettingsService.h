@@ -15,7 +15,7 @@
 #include <IPAddress.h>
 #include <SettingsService.h>
 #include <BrewListService.h>
-#include <BrewSettingsService.h>
+#include "BrewSettingsService.h"
 
 #define POST_BOIL_SETTINGS_SERVICE_PATH "/rest/saveBoilSettings"
 #define GET_BOIL_SETTINGS_SERVICE_PATH "/rest/getBoilSettings"

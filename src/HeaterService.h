@@ -5,14 +5,14 @@
 #include <ActiveStatus.h>
 #include <PID_v1.h>
 #include <PID_AutoTune_v0.h>
-#include <enum.h>
-#include <BrewSettingsService.h>
+#include "enum.h"
+#include "BrewSettingsService.h"
 
 struct HeaterServiceStatus
 {
   double PWM;
   double PWMPercentage;
-  boolean PIDActing;
+  bool PIDActing;
 };
 
 class HeaterService

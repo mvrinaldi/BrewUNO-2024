@@ -1,7 +1,7 @@
 #ifndef MashKettleHeaterService_h
 #define MashKettleHeaterService_h
 
-#include <HeaterService.h>
+#include "HeaterService.h"
 
 class MashKettleHeaterService : public HeaterService
 {
@@ -11,7 +11,7 @@ public:
 
 protected:
   void SetUP();
-  boolean StopCompute();
+  bool StopCompute();
   PID &GetPid();
   void PidCompute();
   double GetPidOutput();

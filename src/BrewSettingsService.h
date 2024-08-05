@@ -3,7 +3,7 @@
 
 #include <SettingsService.h>
 #include <IPAddress.h>
-#include <ActiveStatus.h>
+#include "ActiveStatus.h"
 
 #define BREW_SETTINGS_FILE "/config/brewSettings.json"
 #define BREW_SETTINGS_SERVICE_PATH "/rest/brewSettings"

@@ -1,7 +1,7 @@
 #ifndef SpargeKettleHeaterService_h
 #define SpargeKettleHeaterService_h
 
-#include <HeaterService.h>
+#include "HeaterService.h"
 
 class SpargeKettleHeaterService : public HeaterService
 {
@@ -11,7 +11,7 @@ public:
 
 protected:
   void SetUP();
-  boolean StopCompute();
+  bool StopCompute();
   void PidCompute();
   double GetPidOutput();
   double GetPidInput();

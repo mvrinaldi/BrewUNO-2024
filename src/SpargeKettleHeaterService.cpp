@@ -1,4 +1,4 @@
-#include <SpargeKettleHeaterService.h>
+#include "SpargeKettleHeaterService.h"
 
 double _spargeKettleSetpoint, _spargeKettleInput, _spargeKettleOutput;
 PID _spargeKettlePID = PID(&_spargeKettleInput, &_spargeKettleOutput, &_spargeKettleSetpoint, 1, 1, 1, P_ON_M, DIRECT);
@@ -62,7 +62,7 @@ bool SpargeKettleHeaterService::InvertedPWM()
   return false;
 }
 
-boolean SpargeKettleHeaterService::StopCompute()
+bool SpargeKettleHeaterService::StopCompute()
 {
   return !_activeStatus->BrewStarted || !_activeStatus->EnableSparge || _activeStatus->ActiveStep != mash || _activeStatus->PWM > 100;
 }

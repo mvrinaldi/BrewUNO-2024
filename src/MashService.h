@@ -15,11 +15,11 @@
 #include <AsyncJsonWebHandler.h>
 #include <TimeLib.h>
 #include <NtpClientLib.h>
-#include <enum.h>
-#include <TemperatureService.h>
-#include <ActiveStatus.h>
-#include <Buzzer.h>
-#include <Pump.h>
+#include "enum.h"
+#include "TemperatureService.h"
+#include "ActiveStatus.h"
+#include "Buzzer.h"
+#include "Pump.h"
 
 #define MASH_SETTINGS_FILE "/config/mashSettings.json"
 
@@ -36,7 +36,7 @@ private:
   FS *_fs;
   TemperatureService *_temperatureService;
   Pump *_pump;
-  boolean checkTemperaturePID(ActiveStatus *activeStatus);
+  bool checkTemperaturePID(ActiveStatus *activeStatus);
   void StepStarted(ActiveStatus *activeStatus, JsonArray steps, time_t timeNow);
   void BoilTime(ActiveStatus *activeStatus);
   void NextStep(ActiveStatus *activeStatus, JsonArray steps, time_t timeNow, int nextMashStep);

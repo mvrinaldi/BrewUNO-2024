@@ -39,7 +39,7 @@ BrewService::BrewService(AsyncWebServer *server,
     _updateHandler.setMaxContentLength(1024);
     _updateHandler.onRequest(std::bind(&BrewService::changeBoilPercentage, this, std::placeholders::_1, std::placeholders::_2));
     _server->addHandler(&_updateHandler);
-}
+} 
 
 BrewService::~BrewService() {}
 

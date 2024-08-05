@@ -9,8 +9,8 @@ BoilSettingsService::BoilSettingsService(AsyncWebServer *server, FS *fs, BrewSet
 bool BoilSettingsService::jsonSchemaIsValid(JsonDocument &jsonObj, String &messages)
 {
     JsonArray steps = jsonObj["st"];
-
     bool validJson = true;
+
     for (int i = 0; i < steps.size(); i++)
     {
         JsonObject step = steps.getElement(i);

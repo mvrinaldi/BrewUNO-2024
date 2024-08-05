@@ -69,7 +69,7 @@ bool BoilKettleHeaterService::InvertedPWM()
   return false;
 }
 
-boolean BoilKettleHeaterService::StopCompute()
+bool BoilKettleHeaterService::StopCompute()
 {
   return !_activeStatus->BrewStarted || _activeStatus->ActiveStep != boil;
 }

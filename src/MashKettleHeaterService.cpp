@@ -1,4 +1,4 @@
-#include <MashKettleHeaterService.h>
+#include "MashKettleHeaterService.h"
 
 double _mashKettleSetpoint, _mashKettleInput, _mashKettleOutput;
 PID _mashKettlePID = PID(&_mashKettleInput, &_mashKettleOutput, &_mashKettleSetpoint, 1, 1, 1, P_ON_M, DIRECT);
@@ -65,7 +65,7 @@ bool MashKettleHeaterService::InvertedPWM()
   return false;
 }
 
-boolean MashKettleHeaterService::StopCompute()
+bool MashKettleHeaterService::StopCompute()
 {
   return !_activeStatus->BrewStarted ||
          _activeStatus->ActiveStep != mash ||
