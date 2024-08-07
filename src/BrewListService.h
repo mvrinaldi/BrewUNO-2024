@@ -30,12 +30,16 @@ public:
     _server->addHandler(&_updateHandler);
   }
 
+
 protected:
-  virtual bool jsonSchemaIsValid(JsonDocument &jsonObj, String &messages) {}
+  virtual bool jsonSchemaIsValid(JsonDocument &jsonObj, String &messages)
+  {
+      return true; // Implementação padrão ou você pode lançar uma exceção
+  }
 
 private:
-  FS *_fs;
   AsyncWebServer *_server;
+  FS *_fs;
   String _settingsFile;
   AsyncJsonWebHandler _updateHandler;
 

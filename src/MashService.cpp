@@ -47,7 +47,7 @@ void MashService::loop(ActiveStatus *activeStatus)
         if (!activeStatus->BrewStarted || activeStatus->ActiveStep != mash)
             return;
     }
-
+    
     time_t timeNow = now();
     if (activeStatus->EndTime > 0 && timeNow > activeStatus->EndTime)
     {

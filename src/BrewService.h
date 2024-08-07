@@ -74,17 +74,17 @@ public:
   void pauseBrew();
 
 private:
-  FS *_fs;
   AsyncWebServer *_server;
-  BoilService *_boilService;
+  FS *_fs;
   MashService *_mashService;
+  BoilService *_boilService;
   BrewSettingsService *_brewSettingsService;
   MashKettleHeaterService *_mashKettleHeaterService;
   SpargeKettleHeaterService *_spargeKettleHeaterService;
   BoilKettleHeaterService *_boilKettleHeaterService;
+  ActiveStatus *_activeStatus;
   TemperatureService *_temperatureService;
   Pump *_pump;
-  ActiveStatus *_activeStatus;
   Lcd *_lcd;
 
   AsyncJsonWebHandler _updateHandler;

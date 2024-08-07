@@ -1,13 +1,16 @@
 #include "Keyboard.h"
 
 Keyboard::Keyboard(ActiveStatus *activeStatus, PCF857x *pcf, BrewService *brewService, BrewSettingsService *brewSettingsService, Pump *pump,
-                             KeyButton *button1, KeyButton *button2, KeyButton *button3, KeyButton *button4)
-    : _pcf(pcf),
-      _activeStatus(activeStatus),
-      _brewService(brewService),
+                   KeyButton *button1, KeyButton *button2, KeyButton *button3, KeyButton *button4)
+    : _activeStatus(activeStatus),
       _brewSettingsService(brewSettingsService),
-      _pump(pump),
-      _button1(button1), _button2(button2), _button3(button3), _button4(button4)
+      _pcf(pcf),
+      _button1(button1),
+      _button2(button2),
+      _button3(button3),
+      _button4(button4),
+      _brewService(brewService),
+      _pump(pump)
 {
 }
 

@@ -8,8 +8,8 @@
 class KeyButton
 {
 private:
-  PCF857x &pcf;
   const uint16_t pin;
+  PCF857x &pcf;
   unsigned long timer = 0;
   unsigned long long_timer = 1500;
   bool state = false;
