@@ -31,11 +31,11 @@ public:
   }
 
 protected:
-  virtual bool jsonSchemaIsValid(JsonDocument &jsonObj, String &messages) {}
+  virtual bool jsonSchemaIsValid(JsonDocument &jsonObj, String &messages) = 0;
 
 private:
-  FS *_fs;
   AsyncWebServer *_server;
+  FS *_fs;
   String _settingsFile;
   AsyncJsonWebHandler _updateHandler;
 
