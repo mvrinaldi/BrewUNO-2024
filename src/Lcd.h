@@ -40,10 +40,10 @@ public:
     void autoScan(uint8 pcfAddress);
 
 private:
-    LiquidCrystal_I2C *_lcd;
-    WiFiStatus *_wifiStatus;
     ActiveStatus *_activeStatus;
-
+    WiFiStatus *_wifiStatus;
+    LiquidCrystal_I2C *_lcd;
+ 
     struct BodyLine
     {
         int line;

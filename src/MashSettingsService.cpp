@@ -15,8 +15,8 @@ bool MashSettingsService::jsonSchemaIsValid(JsonDocument jsonObj, String &messag
     }
 
     bool validJson = true;
-    for (int i = 0; i < steps.size(); i++)
-    {
+    for (std::size_t i = 0; i < steps.size(); i++) {
+
         JsonObject step = steps[i];
         if (step["n"] == "")
         {

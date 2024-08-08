@@ -56,7 +56,7 @@ void Pump::CheckRest()
     if (recirculationOn && !_activeStatus->PIDActing)
     {
         unsigned long timeNow = millis();
-        if (!isResting && timeNow - lastPumpStarted >= _brewSettingsService->PumpRestInterval * 1000)
+        if (!isResting && timeNow - lastPumpStarted >= static_cast<unsigned long>(_brewSettingsService->PumpRestInterval) * 1000)
         {
             Serial.println("Pump Rest time to sleep!");
             TurnPump(false);
@@ -66,7 +66,7 @@ void Pump::CheckRest()
             Buzzer().Ring(1, 50);
         }
 
-        if (isResting && timeNow - lastPumpRest >= _brewSettingsService->PumpRestTime * 1000)
+        if (isResting && timeNow - lastPumpRest >= static_cast<unsigned long>(_brewSettingsService->PumpRestTime) * 1000)
         {
             Serial.println("Pump Rest wake up!");
             TurnPump(true);

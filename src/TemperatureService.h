@@ -19,6 +19,9 @@ public:
   ~TemperatureService();
 
   BrewSettingsService *_brewSettingsService;
+  AsyncWebServer *_server;
+  FS *_fs;
+  DallasTemperature _dallasTemperature;
 
   Temperatures GetTemperatures();
 
@@ -29,9 +32,7 @@ public:
   int DeviceCount;
 
 private:
-  AsyncWebServer *_server;
-  FS *_fs;
-  DallasTemperature _dallasTemperature;
   float getTemperature();
 };
+
 #endif

@@ -17,8 +17,8 @@ public:
   Pump(AsyncWebServer *server, ActiveStatus *activeStatus, BrewSettingsService *brewSettingsService);
 
   AsyncWebServer *_server;
-  BrewSettingsService *_brewSettingsService;
   ActiveStatus *_activeStatus;
+  BrewSettingsService *_brewSettingsService;
 
   void TurnPumpOn();
   void TurnPumpOff();

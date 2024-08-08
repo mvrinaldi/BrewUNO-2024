@@ -1,7 +1,10 @@
 #include "BrewSettingsService.h"
 
-BrewSettingsService::BrewSettingsService(AsyncWebServer *server, FS *fs, ActiveStatus *activeStatus) : _activeStatus(activeStatus),
-                                                                                                       SettingsService(server, fs, BREW_SETTINGS_SERVICE_PATH, BREW_SETTINGS_FILE) {}
+BrewSettingsService::BrewSettingsService(AsyncWebServer *server, FS *fs, ActiveStatus *activeStatus) 
+    : SettingsService(server, fs, BREW_SETTINGS_SERVICE_PATH, BREW_SETTINGS_FILE), // Inicializa a classe base primeiro
+      _activeStatus(activeStatus) // Inicializa _activeStatus depois
+{
+}
 
 BrewSettingsService::~BrewSettingsService() {}
 

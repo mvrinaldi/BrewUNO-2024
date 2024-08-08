@@ -58,4 +58,4 @@ private:
   void processSyncEvent(NTPSyncEvent_t ntpEvent);
 };
 
-#endif // end NTPSettingsService_h
+#endif

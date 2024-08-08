@@ -1,9 +1,10 @@
 #include "TemperatureService.h"
 
-TemperatureService::TemperatureService(AsyncWebServer *server, FS *fs, DallasTemperature dallasTemperature, BrewSettingsService *brewSettingsService) : _server(server),
-                                                                                                                                                        _fs(fs),
-                                                                                                                                                        _dallasTemperature(dallasTemperature),
-                                                                                                                                                        _brewSettingsService(brewSettingsService)
+TemperatureService::TemperatureService(AsyncWebServer *server, FS *fs, DallasTemperature dallasTemperature, BrewSettingsService *brewSettingsService)
+  : _brewSettingsService(brewSettingsService),  // Inicializa primeiro
+    _server(server),
+    _fs(fs),
+    _dallasTemperature(dallasTemperature)  // Inicializa por último
 {
     _server->on(GET_SENSORS_SERVICE_PATH, HTTP_GET, std::bind(&TemperatureService::GetTemperatureAndAdress, this, std::placeholders::_1));
 }
